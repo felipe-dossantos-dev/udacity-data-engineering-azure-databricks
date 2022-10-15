@@ -1,6 +1,9 @@
+# Databricks notebook source
 from bronze import *
 
 BRONZE_TABLE = "divvy.bronze_payments"
+
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS divvy;")
 
 spark.sql(f"DROP TABLE IF EXISTS {BRONZE_TABLE};")
 df = (

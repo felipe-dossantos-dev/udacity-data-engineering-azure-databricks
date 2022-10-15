@@ -1,0 +1,94 @@
+Table "dbo"."dim_date" as DD{
+  "date" date [pk]
+  "day" tinyint
+  "day_suffix" char(2)
+  "weekday" tinyint
+  "weekday_name" varchar(10)
+  "dow_in_month" tinyint
+  "day_year" smallint
+  "week_of_month" tinyint
+  "week_of_year" tinyint
+  "iso_week_of_year" tinyint
+  "month" tinyint
+  "month_name" varchar(10)
+  "quarter" tinyint
+  "quarter_name" varchar(6)
+  "year" smallint
+  "mmyyyy" char(6)
+  "month_year" char(8)
+  "first_day_of_month" date
+  "last_day_of_month" date
+  "first_day_of_quarter" date
+  "last_day_of_quarter" date
+  "first_day_of_year" date
+  "last_day_of_year" date
+  "first_day_of_nextmonth" date
+  "first_day_of_nextyear" date
+}
+
+Table "dbo"."dim_rider" as DR {
+  "rider_id" bigint [pk, not null]
+  "first" nvarchar(400)
+  "last" nvarchar(400)
+  "address" nvarchar(4000)
+  "birthday" datetime2(7)
+  "account_start_date" datetime2(7)
+  "account_end_date" datetime2(7)
+  "is_member" bit
+}
+
+Table "dbo"."dim_station" as DS {
+  "station_id" nvarchar(400) [pk, not null]
+  "name" nvarchar(400)
+  "latitude" float
+  "longitude" float
+}
+
+Table "dbo"."dim_time" as DT{
+  "time" time(7) [pk]
+  "hour" int
+  "minute" int
+  "am_pm" varchar(2) [not null]
+  "day_part" varchar(10)
+  "hour_12" varchar(17)
+  "hour_24" varchar(13)
+  "notation_12" varchar(10)
+  "notation_24" varchar(10)
+  "minute_15" int
+}
+
+Table "dbo"."fact_trip" as FT {
+  "trip_id" nvarchar(400) [pk]
+  "time_spent" int
+  "rideable_type" nvarchar(50)
+  "rider_age_at_time" int
+  "rider_id" bigint
+  "start_station_id" nvarchar(400)
+  "start_at_date" date
+  "start_at_time" time(7)
+  "start_at_time_key" time(7)
+  "end_station_id" nvarchar(400)
+  "ended_at_date" date
+  "ended_at_time" time(7)
+  "ended_at_time_key" time(7)
+  "is_member" bit
+}
+
+Ref: FT.start_at_time_key > DT.time
+Ref: FT.ended_at_time_key > DT.time
+Ref: FT.start_at_date > DD.date
+Ref: FT.ended_at_date > DD.date
+Ref: FT.rider_id > DR.rider_id
+Ref: FT.start_station_id > DS.station_id
+Ref: FT.end_station_id > DS.station_id
+
+Table "dbo"."fact_payment" as FP{
+  "payment_id" bigint [pk]
+  "amount" decimal(14,2)
+  "date" date
+  "rider_id" bigint
+  "rider_age_account_start" int
+}
+
+Ref: FP.date > DD.date
+Ref: FP.rider_id > DR.rider_id
