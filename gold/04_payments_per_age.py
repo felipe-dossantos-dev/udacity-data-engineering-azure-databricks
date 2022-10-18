@@ -9,7 +9,6 @@ spark.sql(f"DROP TABLE IF EXISTS {GOLD_TABLE};")
 
 df = spark.table("divvy.fact_payments")
 # Analyze how much money is spent Per member, based on the age of the rider at account start
-# rider_age_account_start
 df = (
     df.groupby(df.rider_age_account_start)
     .agg(
