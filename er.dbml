@@ -1,29 +1,18 @@
 Table "dbo"."dim_date" as DD{
   "date" date [pk]
-  "day" tinyint
-  "day_suffix" char(2)
-  "weekday" tinyint
-  "weekday_name" varchar(10)
-  "dow_in_month" tinyint
-  "day_year" smallint
-  "week_of_month" tinyint
-  "week_of_year" tinyint
-  "iso_week_of_year" tinyint
+  "date_int" int
+  "year" tinyint
+  "calendar_month" varchar
   "month" tinyint
-  "month_name" varchar(10)
-  "quarter" tinyint
-  "quarter_name" varchar(6)
-  "year" smallint
-  "mmyyyy" char(6)
-  "month_year" char(8)
-  "first_day_of_month" date
-  "last_day_of_month" date
-  "first_day_of_quarter" date
-  "last_day_of_quarter" date
-  "first_day_of_year" date
-  "last_day_of_year" date
-  "first_day_of_nextmonth" date
-  "first_day_of_nextyear" date
+  "calendar_day" varchar
+  "day_of_week" tinyint
+  "day_of_week_start_monday" tinyint
+  "is_week_day" tinyint
+  "day_of_month" tinyint
+  "is_last_day_of_month" bool
+  "day_of_year" tinyint
+  "week_of_year_iso" tinyint
+  "quarter_of_year" tinyint
 }
 
 Table "dbo"."dim_rider" as DR {
