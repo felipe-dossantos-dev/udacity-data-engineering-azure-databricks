@@ -27,6 +27,7 @@ df = (
         F.col("month"),
         F.col("avg_amount"),
         F.col("sum_amount"),
+        F.col("count_rides"),
     )
 )
 
