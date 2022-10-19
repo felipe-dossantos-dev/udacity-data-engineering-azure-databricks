@@ -1,4 +1,4 @@
-Table "dbo"."dim_date" as DD{
+Table "dbo"."dim_date" as DD {
   "date" date [pk]
   "date_int" int
   "year" tinyint
@@ -15,63 +15,40 @@ Table "dbo"."dim_date" as DD{
   "quarter_of_year" tinyint
 }
 
-Table "dbo"."dim_rider" as DR {
+Table "dbo"."dim_riders" as DR {
   "rider_id" bigint [pk, not null]
-  "first" nvarchar(400)
-  "last" nvarchar(400)
-  "address" nvarchar(4000)
-  "birthday" datetime2(7)
-  "account_start_date" datetime2(7)
-  "account_end_date" datetime2(7)
+  "first" varchar
+  "last" varchar
+  "address" varchar
+  "birthday" timestamp
+  "account_start_date" timestamp
+  "account_end_date" timestamp
   "is_member" bit
 }
 
-Table "dbo"."dim_station" as DS {
-  "station_id" nvarchar(400) [pk, not null]
-  "name" nvarchar(400)
+Table "dbo"."dim_stations" as DS {
+  "station_id" varchar [pk, not null]
+  "name" varchar
   "latitude" float
   "longitude" float
 }
 
-Table "dbo"."dim_time" as DT{
-  "time" time(7) [pk]
-  "hour" int
-  "minute" int
-  "am_pm" varchar(2) [not null]
-  "day_part" varchar(10)
-  "hour_12" varchar(17)
-  "hour_24" varchar(13)
-  "notation_12" varchar(10)
-  "notation_24" varchar(10)
-  "minute_15" int
-}
-
-Table "dbo"."fact_trip" as FT {
-  "trip_id" nvarchar(400) [pk]
+Table "dbo"."fact_trips" as FT {
+  "trip_id" varchar [pk]
   "time_spent" int
-  "rideable_type" nvarchar(50)
+  "rideable_type" varchar
   "rider_age_at_time" int
   "rider_id" bigint
-  "start_station_id" nvarchar(400)
+  "start_station_id" varchar
+  "start_at" timestamp
   "start_at_date" date
-  "start_at_time" time(7)
-  "start_at_time_key" time(7)
-  "end_station_id" nvarchar(400)
+  "end_station_id" varchar
+  "ended_at" timestamp
   "ended_at_date" date
-  "ended_at_time" time(7)
-  "ended_at_time_key" time(7)
   "is_member" bit
 }
 
-Ref: FT.start_at_time_key > DT.time
-Ref: FT.ended_at_time_key > DT.time
-Ref: FT.start_at_date > DD.date
-Ref: FT.ended_at_date > DD.date
-Ref: FT.rider_id > DR.rider_id
-Ref: FT.start_station_id > DS.station_id
-Ref: FT.end_station_id > DS.station_id
-
-Table "dbo"."fact_payment" as FP{
+Table "divvy"."fact_payments" as FP {
   "payment_id" bigint [pk]
   "amount" decimal(14,2)
   "date" date
@@ -79,5 +56,10 @@ Table "dbo"."fact_payment" as FP{
   "rider_age_account_start" int
 }
 
+Ref: FT.start_at_date > DD.date
+Ref: FT.ended_at_date > DD.date
+Ref: FT.rider_id > DR.rider_id
+Ref: FT.start_station_id > DS.station_id
+Ref: FT.end_station_id > DS.station_id
 Ref: FP.date > DD.date
 Ref: FP.rider_id > DR.rider_id
