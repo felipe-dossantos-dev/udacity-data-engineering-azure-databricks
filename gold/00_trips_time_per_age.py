@@ -1,6 +1,5 @@
 # Databricks notebook source
-from silver import *
-from pyspark.sql.functions import sum, avg, col
+from gold import *
 
 
 GOLD_TABLE = "divvy.gold_trips_time_per_age"
@@ -13,14 +12,14 @@ df = spark.table("divvy.fact_trips")
 df = (
     df.groupby(df.rider_age_at_time)
     .agg(
-        avg(df.time_spent).alias("avg_time_spent"),
-        sum(df.time_spent).alias("sum_time_spent"),
+        F.avg(df.time_spent).alias("avg_time_spent"),
+        F.sum(df.time_spent).alias("sum_time_spent"),
     )
     .orderBy(df.rider_age_at_time)
     .select(
-        col("rider_age_at_time"),
-        col("avg_time_spent"),
-        col("sum_time_spent"),
+        F.col("rider_age_at_time"),
+        F.col("avg_time_spent"),
+        F.col("sum_time_spent"),
     )
 )
 

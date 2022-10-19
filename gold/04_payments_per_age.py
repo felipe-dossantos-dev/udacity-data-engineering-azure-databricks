@@ -1,7 +1,5 @@
 # Databricks notebook source
-from silver import *
-from pyspark.sql.functions import sum, avg, col
-
+from gold import *
 
 GOLD_TABLE = "divvy.gold_payments_per_age"
 
@@ -12,14 +10,14 @@ df = spark.table("divvy.fact_payments")
 df = (
     df.groupby(df.rider_age_account_start)
     .agg(
-        avg(df.amount).alias("avg_amount"),
-        sum(df.amount).alias("sum_amount"),
+        F.avg(df.amount).alias("avg_amount"),
+        F.sum(df.amount).alias("sum_amount"),
     )
     .orderBy(df.rider_age_account_start)
     .select(
-        col("rider_age_account_start"),
-        col("avg_amount"),
-        col("sum_amount"),
+        F.col("rider_age_account_start"),
+        F.col("avg_amount"),
+        F.col("sum_amount"),
     )
 )
 

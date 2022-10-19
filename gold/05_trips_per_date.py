@@ -1,6 +1,5 @@
 # Databricks notebook source
-from silver import *
-import pyspark.sql.functions as F
+from gold import *
 
 
 GOLD_TABLE = "divvy.gold_trips_per_date"
