@@ -17,6 +17,7 @@ df = df.join(date_df, df.date == date_df.date, "inner")
 df = (
     df.groupby(df.rider_id, df.month)
     .agg(
+        F.count(df.rider_id).alias("count_rides"),
         F.avg(df.amount).alias("avg_amount"),
         F.sum(df.amount).alias("sum_amount"),
     )
